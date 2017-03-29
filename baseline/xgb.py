@@ -34,9 +34,9 @@ TARGET_ITEMS      = "targetItems.csv"
 builder = InteractionBuilder(users, items)
 (header_interactions, interactions) = select(
     INTERACTIONS_FILE,
-    lambda x: x[2] != '0',  
+    lambda x: x[2] != '0',
     builder.build_interaction,
-    lambda x: (int(x[0]), int(x[1])) 
+    lambda x: (int(x[0]), int(x[1]))
 )
 
 
@@ -94,3 +94,16 @@ for j in jobs:
 for j in jobs:
     j.join()
 
+'''
+6) Merge Solution Files
+'''
+
+s = open('solution.csv','w')
+for i in range(N_WORKERS):
+    f = open('solution_'+str(i)+'.csv','r')
+    while True:
+        line = f.readline()
+        s.write(line)
+        if not line: break
+    f.close()
+s.close()

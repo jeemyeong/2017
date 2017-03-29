@@ -7,13 +7,15 @@ by Daniel Kohlsdorf
 
 class User:
 
-    def __init__(self, title, clevel, indus, disc, country, region):
+    def __init__(self, title, clevel, indus, disc, country, region, wtcj, premium):
         self.title   = title
         self.clevel  = clevel
         self.indus   = indus
         self.disc    = disc
         self.country = country
         self.region  = region
+        self.wtcj    = wtcj
+        self.premium = premium
 
 class Item:
 
@@ -26,7 +28,7 @@ class Item:
         self.region  = region
 
 class Interaction:
-    
+
     def __init__(self, user, item, interaction_type):
         self.user = user
         self.item = item
@@ -65,16 +67,29 @@ class Interaction:
         else:
             return 0.0
 
+    def wtcj_user(self):
+        if self.user.wtcj == 1:
+            return 1.0
+        else:
+            return 0.0
+
+    def premium_user(self):
+        if self.user.premium == 1:
+            return 1.0
+        else:
+            return 0.0
+
     def features(self):
         return [
-            self.title_match(), self.clevel_match(), self.indus_match(), 
-            self.discipline_match(), self.country_match(), self.region_match()
+            self.title_match(), self.clevel_match(), self.indus_match(),
+            self.discipline_match(), self.country_match(), self.region_match(),
+            self.wtcj_user(), self.premium_user()
         ]
 
-    def label(self): 
-        if self.interaction_type == 4: 
-            return 0.0
+    def label(self):
+        score = 0.0
+        if self.interaction_type == 4:
+            score +=0
         else:
-            return 1.0
-
-
+            score +=1.0
+        return score

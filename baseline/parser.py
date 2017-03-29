@@ -5,11 +5,11 @@ items and user models.
 by Daniel Kohlsdorf
 '''
 
-from model import * 
+from model import *
 
 
 def is_header(line):
-    return "recsyschallenge" in line 
+    return "recsyschallenge" in line
 
 
 def process_header(header):
@@ -21,7 +21,7 @@ def process_header(header):
     return x
 
 
-def select(from_file, where, toObject, index):    
+def select(from_file, where, toObject, index):
     header = None
     data = {}
     i = 0
@@ -37,7 +37,7 @@ def select(from_file, where, toObject, index):
         i += 1
         if i % 100000 == 0:
             print("... reading line " + str(i) + " from file " + from_file)
-    return(header, data)        
+    return(header, data)
 
 
 def build_user(str_user, names):
@@ -47,9 +47,11 @@ def build_user(str_user, names):
         int(str_user[names["industry_id"]]),
         int(str_user[names["discipline_id"]]),
         str_user[names["country"]],
-        str_user[names["region"]]
+        str_user[names["region"]],
+        int(str_user[names["wtcj"]]),
+        int(str_user[names["premium"]])
     )
-    
+
 
 def build_item(str_item, names):
     return Item(
@@ -63,11 +65,11 @@ def build_item(str_item, names):
 
 
 class InteractionBuilder:
-    
+
     def __init__(self, user_dict, item_dict):
         self.user_dict = user_dict
         self.item_dict = item_dict
-    
+
     def build_interaction(self, str_inter, names):
         if int(str_inter[names['item_id']]) in self.item_dict and int(str_inter[names['user_id']]) in self.user_dict:
             return Interaction(
@@ -77,5 +79,3 @@ class InteractionBuilder:
             )
         else:
             return None
-
-

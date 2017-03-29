@@ -67,27 +67,19 @@ class Interaction:
         else:
             return 0.0
 
-    def wtcj_user(self):
-        if self.user.wtcj == 1:
-            return 1.0
-        else:
-            return 0.0
-
-    def premium_user(self):
-        if self.user.premium == 1:
-            return 1.0
-        else:
-            return 0.0
 
     def features(self):
         return [
             self.title_match(), self.clevel_match(), self.indus_match(),
-            self.discipline_match(), self.country_match(), self.region_match(),
-            self.wtcj_user(), self.premium_user()
+            self.discipline_match(), self.country_match(), self.region_match()
         ]
 
     def label(self):
         score = 0.0
+        if self.user.wtcj_user == 1:
+            score +=1.0
+        else:
+            score +=0
         if self.interaction_type == 4:
             score +=0
         else:

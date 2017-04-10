@@ -28,6 +28,7 @@ def select(from_file, where, toObject, index):
     for line in open(from_file):
         if is_header(line):
             header = process_header(line.strip().split("\t"))
+            print(header)
         else:
             cmp = line.strip().split("\t")
             if where(cmp):
@@ -48,7 +49,6 @@ def build_user(str_user, names):
         int(str_user[names["discipline_id"]]),
         str_user[names["country"]],
         str_user[names["region"]],
-        int(str_user[names["wtcj"]]),
         int(str_user[names["premium"]])
     )
 
@@ -60,7 +60,8 @@ def build_item(str_item, names):
         int(str_item[names["industry_id"]]),
         int(str_item[names["discipline_id"]]),
         str_item[names["country"]],
-        str_item[names["region"]]
+        str_item[names["region"]],
+        int(str_item[names["is_payed"]])
     )
 
 
@@ -75,7 +76,12 @@ class InteractionBuilder:
             return Interaction(
                 self.user_dict[int(str_inter[names['user_id']])],
                 self.item_dict[int(str_inter[names['item_id']])],
-                int(str_inter[names["interaction_type"]])
+                int(str_inter[names["0"]]),
+                int(str_inter[names["1"]]),
+                int(str_inter[names["2"]]),
+                int(str_inter[names["3"]]),
+                int(str_inter[names["4"]]),
+                int(str_inter[names["5"]])
             )
         else:
             return None

@@ -19,7 +19,7 @@ print(" --- Recsys Challenge 2017 Baseline --- ")
 N_WORKERS         = 5
 USERS_FILE        = "users.csv"
 ITEMS_FILE        = "items.csv"
-INTERACTIONS_FILE = "interactions.csv"
+INTERACTIONS_FILE = "interactions_count.csv"
 TARGET_USERS      = "targetUsers.csv"
 TARGET_ITEMS      = "targetItems.csv"
 
@@ -34,7 +34,7 @@ TARGET_ITEMS      = "targetItems.csv"
 builder = InteractionBuilder(users, items)
 (header_interactions, interactions) = select(
     INTERACTIONS_FILE,
-    lambda x: x[2] != '0',
+    lambda x: True,
     builder.build_interaction,
     lambda x: (int(x[0]), int(x[1]))
 )

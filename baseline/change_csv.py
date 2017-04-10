@@ -11,6 +11,47 @@ SAMPLE_INTERACTIONS_FILE = "sample_interactions.csv"
 SAMPLE_TARGET_USERS      = "sample_target_users.csv"
 SAMPLE_TARGET_ITEMS      = "sample_target_items.csv"
 maxIdx = 10000
+# interaction count
+interaction_dict = {}
+with open("interactions.csv", 'r') as csvFile:
+    first = True
+    reader = csv.reader(csvFile, delimiter='\t')
+    i = 0
+    for row in reader:
+        i += 1
+        if first:
+            first = False
+            header_interactions = ['recsyschallenge_v2017_interactions_final_anonym_training_export.item_id', 'recsyschallenge_v2017_interactions_final_anonym_training_export.user_id', 'recsyschallenge_v2017_interactions_final_anonym_training_export.0', 'recsyschallenge_v2017_interactions_final_anonym_training_export.1', 'recsyschallenge_v2017_interactions_final_anonym_training_export.2', 'recsyschallenge_v2017_interactions_final_anonym_training_export.3', 'recsyschallenge_v2017_interactions_final_anonym_training_export.4', 'recsyschallenge_v2017_interactions_final_anonym_training_export.5']
+            continue
+
+        user_id, item_id, interaction = (row[0], row[1], row[2])
+
+        if item_id not in interaction_dict:
+            interaction_dict[item_id] = {}
+
+        if user_id not in interaction_dict[item_id]:
+            interaction_dict[item_id][user_id] = {}
+            interaction_dict[item_id][user_id]['0'] = 0
+            interaction_dict[item_id][user_id]['1'] = 0
+            interaction_dict[item_id][user_id]['2'] = 0
+            interaction_dict[item_id][user_id]['3'] = 0
+            interaction_dict[item_id][user_id]['4'] = 0
+            interaction_dict[item_id][user_id]['5'] = 0
+
+        interaction_dict[item_id][user_id][interaction] += 1
+
+        if i % 500000 == 0:
+            print(str(i)+' lines have been read.');
+
+with open('interactions_count.csv', 'w') as csvFile:
+    writer = csv.writer(csvFile, delimiter='\t')
+    writer.writerow(header_interactions)
+    for item_id in interaction_dict:
+        for user_id in interaction_dict[item_id]:
+            writer.writerow([item_id, user_id, interaction_dict[item_id][user_id]['0'],
+                            interaction_dict[item_id][user_id]['1'], interaction_dict[item_id][user_id]['2'],
+                            interaction_dict[item_id][user_id]['3'], interaction_dict[item_id][user_id]['4'],
+                            interaction_dict[item_id][user_id]['5']])
 
 with open(USERS_FILE, 'r') as users_file:
     with open(SAMPLE_USER_FILE, 'w') as sample_users_file:
@@ -95,46 +136,3 @@ with open(TARGET_ITEMS, 'r') as target_items:
                 sample_target_items.write("\t".join(row)+"\n")
             if i % 500000 == 0:
                 print(str(i)+' lines have been read.')
-
-
-# # interaction count
-# interaction_dict = {}
-# with open(INTERACTIONS_FILE, 'r') as csvFile:
-#     first = True
-#     reader = csv.reader(csvFile, delimiter='\t')
-#     i = 0
-#     for row in reader:
-#         i += 1
-#         if first:
-#             first = False
-#             header_interactions = ['recsyschallenge_v2017_interactions_final_anonym_training_export.item_id', 'recsyschallenge_v2017_interactions_final_anonym_training_export.user_id', 'recsyschallenge_v2017_interactions_final_anonym_training_export.0', 'recsyschallenge_v2017_interactions_final_anonym_training_export.1', 'recsyschallenge_v2017_interactions_final_anonym_training_export.2', 'recsyschallenge_v2017_interactions_final_anonym_training_export.3', 'recsyschallenge_v2017_interactions_final_anonym_training_export.4', 'recsyschallenge_v2017_interactions_final_anonym_training_export.5']
-#             continue
-#
-#         user_id, item_id, interaction = (row[0], row[1], row[2])
-#
-#         if item_id not in interaction_dict:
-#             interaction_dict[item_id] = {}
-#
-#         if user_id not in interaction_dict[item_id]:
-#             interaction_dict[item_id][user_id] = {}
-#             interaction_dict[item_id][user_id]['0'] = 0
-#             interaction_dict[item_id][user_id]['1'] = 0
-#             interaction_dict[item_id][user_id]['2'] = 0
-#             interaction_dict[item_id][user_id]['3'] = 0
-#             interaction_dict[item_id][user_id]['4'] = 0
-#             interaction_dict[item_id][user_id]['5'] = 0
-#
-#         interaction_dict[item_id][user_id][interaction] += 1
-#
-#         if i % 500000 == 0:
-#             print(str(i)+' lines have been read.');
-#
-# with open('interactions_count.csv', 'w') as csvFile:
-#     writer = csv.writer(csvFile, delimiter='\t')
-#     writer.writerow(header_interactions)
-#     for item_id in interaction_dict:
-#         for user_id in interaction_dict[item_id]:
-#             writer.writerow([item_id, user_id, interaction_dict[item_id][user_id]['0'],
-#                             interaction_dict[item_id][user_id]['1'], interaction_dict[item_id][user_id]['2'],
-#                             interaction_dict[item_id][user_id]['3'], interaction_dict[item_id][user_id]['4'],
-#                             interaction_dict[item_id][user_id]['5']])

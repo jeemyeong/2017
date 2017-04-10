@@ -88,7 +88,7 @@ class Interaction:
 
     def addEncodeData(self,encodedData):
         self.encoded = encodedData
-        print(encodedData)
+        # print(encodedData)
 
     def label(self):
         score = 0.0
